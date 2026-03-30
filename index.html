@@ -552,8 +552,96 @@
   }
 
 
+  ::-webkit-scrollbar { width: 4px; }
   ::-webkit-scrollbar-track { background: transparent; }
   ::-webkit-scrollbar-thumb { background: var(--border2); border-radius: 4px; }
+
+  /* ===== HISTORY PANEL ===== */
+  .history-panel {
+    position: fixed; right: 0; top: 65px; bottom: 0; width: 300px;
+    background: var(--surface); border-left: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    transform: translateX(100%); transition: transform 0.25s ease; z-index: 100;
+  }
+  .history-panel.open { transform: translateX(0); }
+  .history-toggle {
+    position: fixed; right: 0; top: 50%; transform: translateY(-50%);
+    background: var(--surface2); border: 1px solid var(--border2); border-right: none;
+    border-radius: 8px 0 0 8px; padding: 10px 6px; cursor: pointer; z-index: 101;
+    writing-mode: vertical-rl; font-size: 11px; font-weight: 600; color: var(--muted);
+    display: flex; align-items: center; transition: color 0.15s, right 0.25s ease;
+  }
+  .history-panel.open + .history-toggle { right: 300px; color: var(--accent2); }
+  .history-header {
+    padding: 1rem 1.25rem 0.75rem; border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .history-header span { font-size: 13px; font-weight: 600; }
+  .history-clear { font-size: 11px; color: var(--danger); cursor: pointer; background: none; border: none; font-family: 'Be Vietnam Pro', sans-serif; }
+  .history-list { flex: 1; overflow-y: auto; padding: 0.75rem; display: flex; flex-direction: column; gap: 0.5rem; }
+  .history-item {
+    background: var(--surface2); border: 1px solid var(--border);
+    border-radius: 8px; padding: 0.65rem 0.85rem; cursor: pointer; transition: border-color 0.15s;
+  }
+  .history-item:hover { border-color: var(--accent2); }
+  .history-item .hi-name { font-size: 12px; font-weight: 500; }
+  .history-item .hi-code { font-size: 11px; color: var(--accent); font-family: 'JetBrains Mono', monospace; }
+  .history-item .hi-time { font-size: 10px; color: var(--muted); margin-top: 2px; }
+  .history-empty { font-size: 12px; color: var(--muted); text-align: center; padding: 2rem 1rem; }
+
+  /* ===== COMPARE BAR ===== */
+  .compare-bar {
+    position: fixed; bottom: 0; left: 320px; right: 0;
+    background: var(--surface); border-top: 1px solid var(--border2);
+    padding: 0.75rem 1.5rem; display: none; align-items: center; gap: 1rem; z-index: 99;
+  }
+  .compare-bar.visible { display: flex; }
+  .compare-chips { display: flex; gap: 0.5rem; flex: 1; flex-wrap: wrap; }
+  .compare-chip {
+    background: var(--surface2); border: 1px solid var(--border2); border-radius: 6px;
+    padding: 4px 10px; font-size: 12px; font-family: 'JetBrains Mono', monospace;
+    color: var(--accent2); display: flex; align-items: center; gap: 6px;
+  }
+  .compare-chip button { background: none; border: none; color: var(--muted); cursor: pointer; font-size: 14px; line-height: 1; padding: 0; }
+  .compare-run-btn {
+    background: var(--accent2); color: #0d1117; border: none; border-radius: 8px;
+    padding: 0.5rem 1.25rem; font-family: 'Be Vietnam Pro', sans-serif;
+    font-size: 13px; font-weight: 600; cursor: pointer; white-space: nowrap;
+  }
+  .compare-run-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .compare-label { font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .add-compare-btn {
+    font-size: 11px; color: var(--accent2); background: none;
+    border: 1px solid rgba(88,166,255,0.3); border-radius: 4px;
+    padding: 3px 8px; cursor: pointer; margin-top: 6px; transition: background 0.15s;
+    font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  .add-compare-btn:hover { background: rgba(88,166,255,0.08); }
+  .add-compare-btn.added { color: var(--muted); border-color: var(--border); cursor: default; }
+
+  /* ===== COMPARE TABLE ===== */
+  .compare-table-wrap { overflow-x: auto; margin-top: 0.75rem; }
+  .compare-table { width: 100%; border-collapse: collapse; font-size: 12px; }
+  .compare-table th {
+    background: var(--surface2); padding: 8px 12px; text-align: left;
+    border: 1px solid var(--border2); font-weight: 600; color: var(--text); white-space: nowrap;
+  }
+  .compare-table td {
+    padding: 7px 12px; border: 1px solid var(--border); color: var(--muted); vertical-align: top;
+  }
+  .compare-table td.hs { font-family: 'JetBrains Mono', monospace; color: var(--accent2); font-weight: 500; }
+  .compare-table td.best { color: var(--accent); font-weight: 600; }
+  .compare-table tr:hover td { background: rgba(255,255,255,0.02); }
+
+  /* ===== EXPORT ===== */
+  .export-btns { display: flex; gap: 0.5rem; margin-top: 0.75rem; flex-wrap: wrap; }
+  .export-btn {
+    display: flex; align-items: center; gap: 5px; background: var(--surface2);
+    border: 1px solid var(--border2); border-radius: 6px; padding: 5px 12px;
+    font-size: 12px; font-weight: 500; color: var(--text); cursor: pointer;
+    transition: border-color 0.15s; font-family: 'Be Vietnam Pro', sans-serif;
+  }
+  .export-btn:hover { border-color: var(--accent2); color: var(--accent2); }
 
   .disclaimer {
     border-top: 1px solid var(--border);
@@ -768,6 +856,26 @@
     </div>
   </div>
 </main>
+
+<!-- History Panel -->
+<div class="history-panel" id="historyPanel">
+  <div class="history-header">
+    <span>📋 Lịch sử tra cứu</span>
+    <button class="history-clear" onclick="clearHistory()">Xóa tất cả</button>
+  </div>
+  <div class="history-list" id="historyList">
+    <div class="history-empty">Chưa có lịch sử tra cứu</div>
+  </div>
+</div>
+<button class="history-toggle" id="historyToggle" onclick="toggleHistory()">📋 Lịch sử</button>
+
+<!-- Compare Bar -->
+<div class="compare-bar" id="compareBar">
+  <span class="compare-label">So sánh:</span>
+  <div class="compare-chips" id="compareChips"></div>
+  <button class="compare-run-btn" id="compareRunBtn" onclick="runCompare()" disabled>So sánh ngay →</button>
+  <button class="export-btn" onclick="clearCompare()" style="border-color:var(--danger);color:var(--danger)">✕ Xóa</button>
+</div>
 
 <script>
 let workbook = null;
@@ -1222,35 +1330,68 @@ Ghi chú: recommended:true chỉ cho 1 mã tốt nhất. Đề xuất 2-3 mã. �
     const decoder = new TextDecoder();
     let rawText = '';
     let charCount = 0;
+    let lastActivity = Date.now();
 
-    if (loadingText) loadingText.textContent = 'AI đang phân tích...  ▋';
+    if (loadingText) loadingText.textContent = 'AI đang phân tích... ▋';
 
-    while (true) {
-      const { done, value } = await reader.read();
-      if (done) break;
+    // Timeout 30s nếu không có activity
+    const timeoutId = setTimeout(() => {
+      reader.cancel('timeout');
+    }, 30000);
 
-      const chunk = decoder.decode(value, { stream: true });
-      const lines = chunk.split('\n');
+    try {
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
 
-      for (const line of lines) {
-        if (!line.startsWith('data: ')) continue;
-        const data = line.slice(6).trim();
-        if (data === '[DONE]') continue;
-        try {
-          const evt = JSON.parse(data);
-          if (evt.type === 'content_block_delta' && evt.delta?.text) {
-            rawText += evt.delta.text;
-            charCount += evt.delta.text.length;
-            // Cập nhật loading text để user thấy đang chạy
-            if (loadingText && charCount % 50 < 5) {
-              loadingText.textContent = `AI đang phân tích... ${charCount} ký tự ▋`;
+        lastActivity = Date.now();
+        const chunk = decoder.decode(value, { stream: true });
+        const lines = chunk.split('\n');
+
+        for (const line of lines) {
+          if (!line.startsWith('data: ')) continue;
+          const data = line.slice(6).trim();
+          if (data === '[DONE]') continue;
+          try {
+            const evt = JSON.parse(data);
+
+            // Bắt lỗi API trả về giữa stream (credit hết, v.v.)
+            if (evt.type === 'error') {
+              throw new Error(evt.error?.message || 'Lỗi từ API trong stream');
             }
+
+            if (evt.type === 'message_delta' && evt.delta?.stop_reason === 'max_tokens') {
+              if (loadingText) loadingText.textContent = 'Đang xử lý kết quả...';
+            }
+
+            if (evt.type === 'content_block_delta' && evt.delta?.text) {
+              rawText += evt.delta.text;
+              charCount += evt.delta.text.length;
+              if (loadingText) {
+                loadingText.textContent = `AI đang phân tích... ${charCount} ký tự ▋`;
+              }
+            }
+          } catch (parseErr) {
+            // Nếu là lỗi thrown từ trên (không phải JSON parse error) thì re-throw
+            if (parseErr.message !== 'Unexpected token') throw parseErr;
           }
-        } catch { /* bỏ qua parse lỗi từng chunk */ }
+        }
       }
+    } finally {
+      clearTimeout(timeoutId);
     }
 
     loadingDiv.remove();
+
+    // Nếu không có gì → báo lỗi rõ
+    if (!rawText.trim()) {
+      const errDiv = document.createElement('div');
+      errDiv.className = 'result-block';
+      errDiv.innerHTML = `<div class="error-box">❌ API không trả về dữ liệu. Có thể do credit chưa đủ hoặc kết nối bị ngắt.<br><br>Kiểm tra tại <a href="https://console.anthropic.com" target="_blank" style="color:var(--accent2)">console.anthropic.com</a></div>`;
+      chatArea.appendChild(errDiv);
+      chatArea.scrollTop = chatArea.scrollHeight;
+      return;
+    }
 
     // Parse JSON từ rawText
     let parsed;
@@ -1258,9 +1399,10 @@ Ghi chú: recommended:true chỉ cho 1 mã tốt nhất. Đề xuất 2-3 mã. �
       const jsonMatch = rawText.match(/\{[\s\S]*\}/);
       parsed = JSON.parse(jsonMatch ? jsonMatch[0] : rawText);
     } catch {
+      // Hiện raw text để debug
       const errDiv = document.createElement('div');
       errDiv.className = 'result-block';
-      errDiv.innerHTML = `<div class="error-box">⚠️ AI trả về không đúng định dạng JSON.<br><pre style="margin-top:8px;font-size:11px;white-space:pre-wrap;color:var(--muted);max-height:200px;overflow:auto">${rawText.substring(0, 500)}</pre></div>`;
+      errDiv.innerHTML = `<div class="error-box">⚠️ Không parse được JSON (${charCount} ký tự nhận được).<br><pre style="margin-top:8px;font-size:11px;white-space:pre-wrap;color:var(--muted);max-height:200px;overflow:auto">${rawText.substring(0, 800)}</pre></div>`;
       chatArea.appendChild(errDiv);
       chatArea.scrollTop = chatArea.scrollHeight;
       return;
@@ -1285,6 +1427,14 @@ function renderResults(chatArea, data, goodsName) {
 
   const candidates = data.candidates || [];
   const timestamp = new Date().toLocaleTimeString('vi-VN');
+  const resultId = 'r' + Date.now();
+
+  // Lưu data vào store toàn cục, tránh nhúng JSON vào HTML attribute
+  window._cardStore = window._cardStore || {};
+  window._cardStore[resultId] = { data, goodsName };
+  candidates.forEach((c, i) => {
+    window._cardStore[resultId + '_' + i] = c;
+  });
 
   let html = `
     <div class="result-header">
@@ -1294,9 +1444,10 @@ function renderResults(chatArea, data, goodsName) {
     </div>
     <div class="hs-cards">`;
 
-  candidates.forEach(c => {
+  candidates.forEach((c, i) => {
     const isRec = c.recommended === true;
     const score = c.do_phu_hop || 0;
+    const cardKey = resultId + '_' + i;
 
     html += `
       <div class="hs-card ${isRec ? 'recommended' : ''}">
@@ -1318,6 +1469,7 @@ function renderResults(chatArea, data, goodsName) {
         </div>
         ${c.dieu_kien ? `<div style="font-size:11px;color:var(--warn);margin-bottom:8px">📋 Điều kiện: ${c.dieu_kien}</div>` : ''}
         <div class="hs-reason">${isRec ? '★ ' : ''}${c.ly_do_khuyen_nghi || ''}</div>
+        <button class="add-compare-btn" data-key="${cardKey}" onclick="handleAddCompare(this)">+ So sánh</button>
       </div>`;
   });
 
@@ -1330,7 +1482,7 @@ function renderResults(chatArea, data, goodsName) {
           <div class="ai-dot"></div>
           Phân Tích Chuyên Sâu Từ AI
         </div>
-        <div class="ai-content">${data.analysis.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>').replace(/\n/g,'<br>')}</div>
+        <div class="ai-content">${data.analysis.replace(/\*\*(.*?)\*\*/g,'<strong>$1</strong>').replace(/\n/g,'<br>')}</div>
       </div>`;
   }
 
@@ -1341,9 +1493,250 @@ function renderResults(chatArea, data, goodsName) {
       </div>`;
   }
 
+  html += `
+    <div class="export-btns">
+      <button class="export-btn" data-rid="${resultId}" onclick="exportResultExcel(this.dataset.rid)">📊 Xuất Excel</button>
+      <button class="export-btn" onclick="window.print()">🖨️ In / PDF</button>
+    </div>`;
+
   resultDiv.innerHTML = html;
   chatArea.appendChild(resultDiv);
   chatArea.scrollTop = chatArea.scrollHeight;
+
+  // Lưu vào lịch sử
+  saveHistory(goodsName, data);
+}
+
+function handleAddCompare(btn) {
+  if (btn.classList.contains('added')) return;
+  const key = btn.dataset.key;
+  const c = window._cardStore?.[key];
+  if (!c) return;
+  addToCompare(c.hs_code, c.ten_hang || '', c);
+  btn.textContent = '✓ Đã thêm';
+  btn.classList.add('added');
+}
+
+/* ==================== HISTORY ==================== */
+let searchHistory = JSON.parse(localStorage.getItem('hs_history') || '[]');
+
+function saveHistory(goodsName, data) {
+  const rec = (data.candidates || []).find(c => c.recommended) || data.candidates?.[0];
+  const entry = {
+    id: Date.now(),
+    time: new Date().toLocaleString('vi-VN'),
+    goodsName,
+    hsCode: rec?.hs_code || '—',
+    thueMfn: rec?.thue_mfn || '',
+    thueBest: rec?.tong_thue_thap_nhat || '',
+    data
+  };
+  searchHistory.unshift(entry);
+  if (searchHistory.length > 50) searchHistory = searchHistory.slice(0, 50);
+  localStorage.setItem('hs_history', JSON.stringify(searchHistory));
+  renderHistory();
+}
+
+function renderHistory() {
+  const list = document.getElementById('historyList');
+  if (searchHistory.length === 0) {
+    list.innerHTML = '<div class="history-empty">Chưa có lịch sử tra cứu</div>';
+    return;
+  }
+  list.innerHTML = searchHistory.map(e => `
+    <div class="history-item" onclick="restoreHistory(${e.id})">
+      <div class="hi-name">${e.goodsName}</div>
+      <div class="hi-code">${e.hsCode} ${e.thueBest ? '· ' + e.thueBest : ''}</div>
+      <div class="hi-time">${e.time}</div>
+    </div>`).join('');
+}
+
+function restoreHistory(id) {
+  const entry = searchHistory.find(e => e.id === id);
+  if (!entry) return;
+  const emptyState = document.getElementById('emptyState');
+  if (emptyState) emptyState.remove();
+  const chatArea = document.getElementById('chatArea');
+  const div = document.createElement('div');
+  div.className = 'result-block';
+  div.innerHTML = `<div class="query-echo"><strong>📂 Từ lịch sử:</strong> ${entry.goodsName} · ${entry.time}</div>`;
+  chatArea.appendChild(div);
+  renderResults(chatArea, entry.data, entry.goodsName);
+  toggleHistory();
+}
+
+function clearHistory() {
+  if (!confirm('Xóa toàn bộ lịch sử tra cứu?')) return;
+  searchHistory = [];
+  localStorage.removeItem('hs_history');
+  renderHistory();
+}
+
+function toggleHistory() {
+  const panel = document.getElementById('historyPanel');
+  panel.classList.toggle('open');
+}
+
+// Load history on start
+renderHistory();
+
+/* ==================== COMPARE ==================== */
+let compareList = []; // [{hsCode, tenHang, data}]
+
+function addToCompare(hsCode, tenHang, cardData) {
+  if (compareList.find(x => x.hsCode === hsCode)) return;
+  if (compareList.length >= 4) { alert('Tối đa 4 mã HS để so sánh'); return; }
+  compareList.push({ hsCode, tenHang, data: cardData });
+  updateCompareBar();
+}
+
+function removeFromCompare(hsCode) {
+  compareList = compareList.filter(x => x.hsCode !== hsCode);
+  updateCompareBar();
+  // Update all add buttons
+  document.querySelectorAll('.add-compare-btn').forEach(btn => {
+    if (btn.dataset.hs === hsCode) {
+      btn.textContent = '+ So sánh';
+      btn.classList.remove('added');
+      btn.onclick = () => addToCompare(hsCode, btn.dataset.name, JSON.parse(btn.dataset.card));
+    }
+  });
+}
+
+function updateCompareBar() {
+  const bar = document.getElementById('compareBar');
+  const chips = document.getElementById('compareChips');
+  const btn = document.getElementById('compareRunBtn');
+
+  if (compareList.length === 0) { bar.classList.remove('visible'); return; }
+  bar.classList.add('visible');
+  chips.innerHTML = compareList.map(x => `
+    <div class="compare-chip">
+      ${x.hsCode}
+      <button onclick="removeFromCompare('${x.hsCode}')" title="Bỏ">×</button>
+    </div>`).join('');
+  btn.disabled = compareList.length < 2;
+}
+
+function clearCompare() {
+  compareList = [];
+  updateCompareBar();
+  document.querySelectorAll('.add-compare-btn').forEach(btn => {
+    btn.textContent = '+ So sánh';
+    btn.classList.remove('added');
+  });
+}
+
+function runCompare() {
+  if (compareList.length < 2) return;
+  const emptyState = document.getElementById('emptyState');
+  if (emptyState) emptyState.remove();
+  const chatArea = document.getElementById('chatArea');
+
+  const resultDiv = document.createElement('div');
+  resultDiv.className = 'result-block';
+
+  const fields = [
+    { key: 'thue_mfn', label: 'Thuế MFN' },
+    { key: 'thue_atiga', label: 'ATIGA' },
+    { key: 'thue_vkfta', label: 'VKFTA' },
+    { key: 'thue_uu_dai_khac', label: 'FTA khác' },
+    { key: 'thue_vat', label: 'VAT' },
+    { key: 'tong_thue_thap_nhat', label: '★ Thấp nhất' },
+    { key: 'dieu_kien', label: 'Điều kiện' },
+    { key: 'do_phu_hop', label: 'Độ phù hợp' },
+  ];
+
+  let html = `
+    <div class="result-header">
+      ⚖️ So sánh ${compareList.length} mã HS
+    </div>
+    <div class="compare-table-wrap">
+    <table class="compare-table">
+      <thead><tr>
+        <th>Tiêu chí</th>
+        ${compareList.map(x => `<th>${x.hsCode}<br><span style="font-size:10px;font-weight:400;color:var(--muted)">${x.tenHang?.substring(0,30) || ''}</span></th>`).join('')}
+      </tr></thead>
+      <tbody>`;
+
+  fields.forEach(f => {
+    html += `<tr><td style="color:var(--text);font-weight:500;white-space:nowrap">${f.label}</td>`;
+    const vals = compareList.map(x => String(x.data[f.key] || '—'));
+    // Highlight lowest tax value
+    const nums = vals.map(v => parseFloat(v));
+    const minNum = Math.min(...nums.filter(n => !isNaN(n)));
+    vals.forEach((v, i) => {
+      const isBest = !isNaN(nums[i]) && nums[i] === minNum && minNum < 999;
+      html += `<td class="${f.key === 'hs_code' ? 'hs' : ''} ${isBest && f.key.includes('thue') ? 'best' : ''}">${v}</td>`;
+    });
+    html += `</tr>`;
+  });
+
+  html += `</tbody></table></div>`;
+
+  // Export buttons for compare
+  html += `
+    <div class="export-btns">
+      <button class="export-btn" onclick="exportCompareExcel()">📊 Xuất Excel</button>
+      <button class="export-btn" onclick="exportComparePrint()">🖨️ In / PDF</button>
+    </div>`;
+
+  resultDiv.innerHTML = html;
+  chatArea.appendChild(resultDiv);
+  chatArea.scrollTop = chatArea.scrollHeight;
+}
+
+/* ==================== EXPORT ==================== */
+function exportResultExcel(resultId) {
+  const stored = window._cardStore?.[resultId];
+  if (!stored) return;
+  const { data, goodsName } = stored;
+  const rows = (data.candidates || []).map(c => ({
+    'Mã HS': c.hs_code,
+    'Tên hàng': c.ten_hang,
+    'Mô tả': c.mo_ta,
+    'Thuế MFN': c.thue_mfn,
+    'ATIGA': c.thue_atiga,
+    'VKFTA': c.thue_vkfta,
+    'FTA khác': c.thue_uu_dai_khac,
+    'VAT': c.thue_vat,
+    'Thuế thấp nhất': c.tong_thue_thap_nhat,
+    'Điều kiện': c.dieu_kien,
+    'Độ phù hợp': (c.do_phu_hop || '') + '%',
+    'Khuyến nghị': c.recommended ? 'Có' : '',
+    'Lý do': c.ly_do_khuyen_nghi
+  }));
+  const ws = XLSX.utils.json_to_sheet(rows);
+  ws['!cols'] = [10,30,30,10,10,10,20,8,15,40,12,10,50].map(w => ({ wch: w }));
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'Kết quả');
+  if (data.analysis) {
+    const ws2 = XLSX.utils.aoa_to_sheet([['Phân tích'], [data.analysis], [''], ['Cảnh báo'], [data.canh_bao || '']]);
+    XLSX.utils.book_append_sheet(wb, ws2, 'Phân tích');
+  }
+  XLSX.writeFile(wb, `HS_${(goodsName||'').substring(0,20)}_${Date.now()}.xlsx`);
+}
+
+function exportComparePrint() {
+  window.print();
+}
+
+function exportCompareExcel() {
+  const rows = compareList.map(x => ({
+    'Mã HS': x.hsCode,
+    'Tên hàng': x.tenHang,
+    'Thuế MFN': x.data.thue_mfn,
+    'ATIGA': x.data.thue_atiga,
+    'VKFTA': x.data.thue_vkfta,
+    'FTA khác': x.data.thue_uu_dai_khac,
+    'VAT': x.data.thue_vat,
+    'Thấp nhất': x.data.tong_thue_thap_nhat,
+    'Điều kiện': x.data.dieu_kien,
+  }));
+  const ws = XLSX.utils.json_to_sheet(rows);
+  const wb = XLSX.utils.book_new();
+  XLSX.utils.book_append_sheet(wb, ws, 'So sánh HS');
+  XLSX.writeFile(wb, `HS_SoSanh_${Date.now()}.xlsx`);
 }
 </script>
 </body>
