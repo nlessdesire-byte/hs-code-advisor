@@ -1,21 +1,53 @@
 <!DOCTYPE html>
-<html lang="vi">
+<html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>HS Code Advisor</title>
-    <link rel="stylesheet" href="styles.css">
-    <script src="script.js" defer></script>
+    <style>
+        body { font-family: Arial, sans-serif; }
+        .container { max-width: 800px; margin: auto; padding: 20px; }
+        .input-section, .result-section { margin: 20px 0; }
+        .result { display: none; }
+        .error { color: red; }
+    </style>
 </head>
 <body>
     <div class="container">
         <h1>HS Code Advisor</h1>
-        <input type="file" id="fileUpload" />
-        <button id="uploadButton">Upload Excel</button>
-        <div id="sheetsIntegration">Google Sheets Integration</div>
-        <div id="aiAnalysis">AI Analysis with Claude API</div>
-        <div id="taxRate">Tax Rate Display</div>
-        <div id="uiComponents">All UI Components</div>
+        <div class="input-section">
+            <label for="query">Enter your query:</label>
+            <input type="text" id="query" placeholder="Type your question...">
+            <button id="submit">Submit</button>
+        </div>
+        <div class="result-section">
+            <h2>Results:</h2>
+            <div class="results" id="results"></div>
+            <div class="error" id="error"></div>
+        </div>
     </div>
+
+    <script>
+        document.getElementById('submit').addEventListener('click', function() {
+            const query = document.getElementById('query').value;
+            const resultsDiv = document.getElementById('results');
+            const errorDiv = document.getElementById('error');
+            resultsDiv.innerHTML = '';
+            errorDiv.innerHTML = '';
+            if (!query) {
+                errorDiv.innerHTML = 'Please enter a query.';
+                return;
+            }
+            // Simulate API call and response
+            setTimeout(() => {
+                // Example result
+                const exampleResults = [
+                    'HS Code: 1234.56 - Description for query: ' + query
+                ];
+                resultsDiv.innerHTML = exampleResults.join('<br/>');
+                resultsDiv.style.display = 'block';
+            }, 1000);
+        });
+    </script>
 </body>
 </html>
